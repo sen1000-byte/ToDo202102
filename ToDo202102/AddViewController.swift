@@ -7,13 +7,14 @@
 
 import UIKit
 import RealmSwift
+import PKHUD
 
 class AddViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet var taskNameTextField: UITextField!
     @IBOutlet var datePicker: UIDatePicker! = UIDatePicker()
     @IBOutlet var tagTextField: UITextField!
-    @IBOutlet var deatailTextField: UITextField!
+    @IBOutlet var deatailTextView: UITextView!
     
     var taskName: String = ""
     var deadLine: String!
@@ -27,8 +28,6 @@ class AddViewController: UIViewController, UITextFieldDelegate {
     //保存
     let realm = try! Realm()
     
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,7 +65,7 @@ class AddViewController: UIViewController, UITextFieldDelegate {
         //どの携帯でも西暦で扱うようにする??
         //formatter.calendar = Calendar(identifier: .gregorian)
         formatter.dateFormat = "yyyy/MM/DD HH:ss"
-        print(formatter.string(from: datePicker.date))
+        //print(formatter.string(from: datePicker.date))
         deadLine = formatter.string(from: datePicker.date)
         
         formatter.dateFormat = "yyyyMMDDHHss"
@@ -76,31 +75,45 @@ class AddViewController: UIViewController, UITextFieldDelegate {
         tag = ""
         
         //詳細
-        deatail = deatailTextField.text ?? ""
+        deatail = deatailTextView.text ?? ""
         
         //nameが何もない時にアラートを出す。
         if taskName == "" {
-            
+            HUD.dimsBackground = true
+            HUD.flash(.labeledError(title: "保存のエラー", subtitle: "タスク名を記入してください"), delay: 1.5)
+        }else{
+            //realmに保存準備
+            let newSaveData = SaveDataFormat()
+            newSaveData.taskName = taskName
+            newSaveData.deadLine = deadLine!
+            newSaveData.deadLineInt = deadLineInt!
+            newSaveData.tag = tag
+            newSaveData.deatail = deatail
+            //realmに保存
+            try! realm.write{
+                realm.add(newSaveData)
+            }
+            let preNC = self.presentingViewController as! UINavigationController
+            let preVC = preNC.viewControllers[0] as! ViewController
+            preVC.whetherSaved = true
+            //画面遷移
+            dismiss(animated: true, completion: nil)
         }
-        //realmに保存準備
-        let newSaveData = SaveDataFormat()
-        newSaveData.taskName = taskName
-        newSaveData.deadLine = deadLine!
-        newSaveData.deadLineInt = deadLineInt!
-        newSaveData.tag = tag
-        newSaveData.deatail = deatail
-        
-        //realmに保存
-        try! realm.write{
-            realm.add(newSaveData)
-        }
-        
-        //画面遷移
-        //dismiss(animated: true, completion: nil)
     }
     
     @IBAction func cancel() {
-        //dismiss(animated: true, completion: nil)
+        let alert = UIAlertController(title: "本当にキャンセルしますか", message: "はいを押すと記入したデータは失われます", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "はい", style: .default, handler: {action in
+//            let prevViewController = self.presentingViewController as! ViewController
+//            prevViewController.whetherSaved = false
+            let preNC = self.presentingViewController as! UINavigationController
+            let preVC = preNC.viewControllers[0] as! ViewController
+//            let preVC = self.presentingViewController as! ViewController
+            preVC.whetherSaved = false
+            self.dismiss(animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "いいえ", style: .destructive, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
     
     

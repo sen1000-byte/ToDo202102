@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fHm-8i-CpZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2Go-hL-IHG">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -87,6 +87,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="dealLineLable" destination="ziU-YD-lIV" id="xY4-fr-CpK"/>
+                                            <outlet property="tagLabel" destination="4Bq-ZU-1ep" id="OVY-3n-gk4"/>
                                             <outlet property="taskNameLable" destination="kJk-V8-zhE" id="i1W-5n-G1g"/>
                                         </connections>
                                     </tableViewCell>
@@ -103,12 +104,17 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="ToDo" id="IVt-kb-UkD">
-                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="zVO-dq-uXJ"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="zVO-dq-uXJ">
+                            <connections>
+                                <action selector="Add" destination="BYZ-38-t0r" id="aRa-JM-tEy"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="3DW-IH-mE5"/>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="table" destination="YL2-PI-0qq" id="Qxj-Eo-Dxv"/>
+                        <segue destination="fHm-8i-CpZ" kind="presentation" identifier="toAdd" modalPresentationStyle="fullScreen" id="YJ5-xu-bA1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -163,12 +169,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="G4w-cb-feZ">
-                                <rect key="frame" x="162" y="611" width="97" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="タグを選択" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ur4-W9-bh7">
                                 <rect key="frame" x="164" y="415" width="87" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -189,20 +189,29 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Cjf-Nn-62J">
+                                <rect key="frame" x="87" y="580" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="L8e-lg-n8g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="tUi-4W-ieX"/>
                     <connections>
                         <outlet property="datePicker" destination="zcz-Ca-h7s" id="HMK-fZ-JMH"/>
-                        <outlet property="deatailTextField" destination="G4w-cb-feZ" id="3Fz-dK-b1n"/>
+                        <outlet property="deatailTextView" destination="Cjf-Nn-62J" id="vwB-Jr-CbR"/>
                         <outlet property="tagTextField" destination="UdY-aE-6aX" id="hqw-I4-8Yk"/>
                         <outlet property="taskNameTextField" destination="XvG-y9-LP1" id="jLT-7L-VPs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tpP-cC-Ida" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1757.9710144927537" y="88.392857142857139"/>
+            <point key="canvasLocation" x="1833" y="82"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="gdz-yl-f9i">
@@ -224,6 +233,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

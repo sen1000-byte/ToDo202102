@@ -11,6 +11,7 @@ class MainTableViewCell: UITableViewCell {
     
     @IBOutlet var taskNameLable: UILabel!
     @IBOutlet var dealLineLable: UILabel!
+    @IBOutlet var tagLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
