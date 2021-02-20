@@ -9,7 +9,7 @@ import UIKit
 import RealmSwift
 import PKHUD
 
-class AddViewController: UIViewController, UITextFieldDelegate {
+class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
     @IBOutlet var taskNameTextField: UITextField!
     @IBOutlet var datePicker: UIDatePicker! = UIDatePicker()
@@ -25,12 +25,11 @@ class AddViewController: UIViewController, UITextFieldDelegate {
     //タグ管理
     var tagArray = [String?]()
     
-    //保存
+    //保存準備
     let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //datePickerの設定
         //からからにする。
         datePicker.preferredDatePickerStyle = .wheels
@@ -39,10 +38,9 @@ class AddViewController: UIViewController, UITextFieldDelegate {
         datePicker.timeZone = NSTimeZone.local
         datePicker.locale = Locale.current
         datePicker.minuteInterval = 5
-        
+        //キーボード閉じるために設定準備
         taskNameTextField.delegate = self
-        
-
+        deatailTextView.delegate = self
         // Do any additional setup after loading the view.
     }
     
@@ -51,6 +49,13 @@ class AddViewController: UIViewController, UITextFieldDelegate {
         //taskNameTextFieldのエンターが押されたら閉じるようにする。
         textField.resignFirstResponder()
         return true
+    }
+    
+    //画面が押された時に発動
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if self.deatailTextView.isFirstResponder{
+            self.deatailTextView.resignFirstResponder()
+        }
     }
     
     @IBAction func save() {

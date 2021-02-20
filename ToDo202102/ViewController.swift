@@ -17,14 +17,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var saveData = try! Realm().objects(SaveDataFormat.self)
     //保存されたかどうか
     var whetherSaved: Bool = false
+    //選択したセルの番号
+    var indexNumber: Int = 0
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //tableViewを使う準備　ViewControllerが主導で、TableViewを使ってくよ
+        table.delegate = self
         table.dataSource = self
         navigationController?.navigationBar.barTintColor = .darkGray
+
         // Do any additional setup after loading the view.
     }
     
@@ -56,6 +60,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.tagLabel.text = saveData[indexPath.row].tag
         return cell
     }
+    
+    //cell選択時に呼ばれるメゾット
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //performSegue(withIdentifier: "toEdit", sender: nil)
+        indexNumber = indexPath.row
+        let nextVC = self.storyboard?.instantiateViewController(identifier: "EditViewController") as! EditViewController
+        nextVC.indexNumber = indexNumber
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+//    //遷移の準備
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "toEdit" {
+//
+//        }
+//    }
+    
+//    //cellの高さ
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 80
+//    }
+    
     
     @IBAction func Add() {
         performSegue(withIdentifier: "toAdd", sender: nil)

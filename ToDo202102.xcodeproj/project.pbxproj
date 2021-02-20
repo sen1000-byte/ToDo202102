@@ -17,6 +17,7 @@
 		335EB27E25DE4217004818C9 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335EB27D25DE4217004818C9 /* MainTableViewCell.swift */; };
 		335EB28525DE54C1004818C9 /* SaveDataFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335EB28425DE54C1004818C9 /* SaveDataFormat.swift */; };
 		335EB29325DFBAA9004818C9 /* UIColor-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335EB29225DFBAA8004818C9 /* UIColor-Extension.swift */; };
+		335EB29A25E090B8004818C9 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335EB29925E090B8004818C9 /* EditViewController.swift */; };
 		BD146A12968DB721A6DE084D /* Pods_ToDo202102.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF683E3C30A070CBD481BDCA /* Pods_ToDo202102.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		335EB27D25DE4217004818C9 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		335EB28425DE54C1004818C9 /* SaveDataFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDataFormat.swift; sourceTree = "<group>"; };
 		335EB29225DFBAA8004818C9 /* UIColor-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor-Extension.swift"; sourceTree = "<group>"; };
+		335EB29925E090B8004818C9 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		389DBFCE137AD03C43FD7089 /* Pods-ToDo202102.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo202102.debug.xcconfig"; path = "Target Support Files/Pods-ToDo202102/Pods-ToDo202102.debug.xcconfig"; sourceTree = "<group>"; };
 		7D2B79D82EFC57AE9191F2CA /* Pods-ToDo202102.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo202102.release.xcconfig"; path = "Target Support Files/Pods-ToDo202102/Pods-ToDo202102.release.xcconfig"; sourceTree = "<group>"; };
 		FF683E3C30A070CBD481BDCA /* Pods_ToDo202102.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ToDo202102.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,12 +76,13 @@
 				3314EB4425DA56660040192D /* AppDelegate.swift */,
 				3314EB4625DA56660040192D /* SceneDelegate.swift */,
 				3314EB4825DA56660040192D /* ViewController.swift */,
+				335EB27D25DE4217004818C9 /* MainTableViewCell.swift */,
 				3314EB4A25DA56660040192D /* Main.storyboard */,
 				3314EB4D25DA566C0040192D /* Assets.xcassets */,
 				3314EB4F25DA566C0040192D /* LaunchScreen.storyboard */,
 				3314EB5225DA566C0040192D /* Info.plist */,
 				335EB27A25DE3FCF004818C9 /* AddViewController.swift */,
-				335EB27D25DE4217004818C9 /* MainTableViewCell.swift */,
+				335EB29925E090B8004818C9 /* EditViewController.swift */,
 				335EB28425DE54C1004818C9 /* SaveDataFormat.swift */,
 				335EB29225DFBAA8004818C9 /* UIColor-Extension.swift */,
 			);
@@ -217,6 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				335EB29A25E090B8004818C9 /* EditViewController.swift in Sources */,
 				3314EB4925DA56660040192D /* ViewController.swift in Sources */,
 				3314EB4525DA56660040192D /* AppDelegate.swift in Sources */,
 				335EB27B25DE3FCF004818C9 /* AddViewController.swift in Sources */,
