@@ -22,6 +22,10 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     let realm = try! Realm()
     var saveData = SaveDataFormat()
     
+    //日付関連
+    let dateformatter = DateFormatter()
+    var datePicker: UIDatePicker = UIDatePicker()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +38,38 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         //キーボード設定のための準備
         taskNameTextField.delegate = self
         deatailTextView.delegate = self
+        
+
+        //日付系
+        dateformatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ydMMMHHmm", options: 0, locale: Locale(identifier: "ja_JP"))
+        //datePickerの設定
+        //からからにする。
+        datePicker.preferredDatePickerStyle = .wheels
+        //日付と時間を表示させる（一応デフォルトでもそうなってる）
+        datePicker.datePickerMode = UIDatePicker.Mode.dateAndTime
+        datePicker.timeZone = NSTimeZone.local
+        datePicker.locale = Locale.current
+        datePicker.minuteInterval = 5
+        datePicker.date = dateformatter.date(from: saveData.deadLine) ?? NSDate() as Date
+        deadLineTextField.inputView = datePicker
+        
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 35))
+                let spacelItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+                let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+                toolbar.setItems([spacelItem, doneItem], animated: true)
+
+                // インプットビュー設定(紐づいているUITextfieldへ代入)
+                deadLineTextField.inputView = datePicker
+                deadLineTextField.inputAccessoryView = toolbar
+
+    }
+    
+    @objc func done() {
+            deadLineTextField.endEditing(true)
+
+            //(from: datePicker.date))を指定してあげることで
+            //datePickerで指定した日付が表示される
+            deadLineTextField.text = "\(dateformatter.string(from: datePicker.date))"
     }
     
     //キーボード関連

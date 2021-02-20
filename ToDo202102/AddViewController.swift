@@ -38,6 +38,7 @@ class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelega
         datePicker.timeZone = NSTimeZone.local
         datePicker.locale = Locale.current
         datePicker.minuteInterval = 5
+        print(datePicker.date)
         //キーボード閉じるために設定準備
         taskNameTextField.delegate = self
         deatailTextView.delegate = self
@@ -69,11 +70,14 @@ class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelega
 //        formatter.timeStyle = .short
         //どの携帯でも西暦で扱うようにする??
         //formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.dateFormat = "yyyy/MM/DD HH:ss"
+        //formatter.dateFormat = "yyyy/MM/dd HH:mm"
+        //日本時間に合わせる
+        formatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ydMMMHHmm", options: 0, locale: Locale(identifier: "ja_JP"))
         //print(formatter.string(from: datePicker.date))
-        deadLine = formatter.string(from: datePicker.date)
         
-        formatter.dateFormat = "yyyyMMDDHHss"
+
+        deadLine = formatter.string(from: datePicker.date)
+        formatter.dateFormat = "yyyyMMddHHmm"
         deadLineInt = Int(formatter.string(from: datePicker.date))
         
         //タグ
