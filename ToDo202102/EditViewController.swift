@@ -53,22 +53,20 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         datePicker.date = dateformatter.date(from: saveData.deadLine) ?? NSDate() as Date
         deadLineTextField.inputView = datePicker
         
-        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 35))
-                let spacelItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-                let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
-                toolbar.setItems([spacelItem, doneItem], animated: true)
+        //キーボードにdoneボタンをつける
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 43))
+        let spaceItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+        toolbar.setItems([spaceItem,doneItem], animated: true)
 
-                // インプットビュー設定(紐づいているUITextfieldへ代入)
-                deadLineTextField.inputView = datePicker
-                deadLineTextField.inputAccessoryView = toolbar
+        //紐づいているUITextfieldへ代入
+        deadLineTextField.inputView = datePicker
+        deadLineTextField.inputAccessoryView = toolbar
 
     }
     
     @objc func done() {
             deadLineTextField.endEditing(true)
-
-            //(from: datePicker.date))を指定してあげることで
-            //datePickerで指定した日付が表示される
             deadLineTextField.text = "\(dateformatter.string(from: datePicker.date))"
     }
     

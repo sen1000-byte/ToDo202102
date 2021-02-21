@@ -16,9 +16,10 @@ class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelega
     @IBOutlet var tagTextField: UITextField!
     @IBOutlet var deatailTextView: UITextView!
     
+    var id: Int = 0
     var taskName: String = ""
     var deadLine: String!
-    var deadLineInt: Int!
+//    var deadLineInt: Int!
     var tag: String = ""
     var deatail: String = ""
     
@@ -60,6 +61,8 @@ class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelega
     }
     
     @IBAction func save() {
+        //id
+        id = realm.objects(SaveDataFormat.self).count
         
         //タスク名
         taskName = taskNameTextField.text ?? ""
@@ -75,10 +78,9 @@ class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelega
         formatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ydMMMHHmm", options: 0, locale: Locale(identifier: "ja_JP"))
         //print(formatter.string(from: datePicker.date))
         
-
         deadLine = formatter.string(from: datePicker.date)
-        formatter.dateFormat = "yyyyMMddHHmm"
-        deadLineInt = Int(formatter.string(from: datePicker.date))
+//        formatter.dateFormat = "yyyyMMddHHmm"
+//        deadLineInt = Int(formatter.string(from: datePicker.date))
         
         //タグ
         tag = ""
@@ -93,9 +95,10 @@ class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelega
         }else{
             //realmに保存準備
             let newSaveData = SaveDataFormat()
+            newSaveData.id = id
             newSaveData.taskName = taskName
             newSaveData.deadLine = deadLine!
-            newSaveData.deadLineInt = deadLineInt!
+//            newSaveData.deadLineInt = deadLineInt!
             newSaveData.tag = tag
             newSaveData.deatail = deatail
             //realmに保存

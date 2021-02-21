@@ -13,13 +13,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     //StroyBoadで扱うTableViewを宣言
     @IBOutlet var table: UITableView!
+    @IBOutlet weak var editBarButton: UIBarButtonItem!
     //realmから値を全て取り出し
+    let realm = try! Realm()
     var saveData = try! Realm().objects(SaveDataFormat.self)
     //保存されたかどうか
     var whetherSaved: Bool = false
     //選択したセルの番号
     var indexNumber: Int = 0
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,11 +30,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         table.dataSource = self
         navigationController?.navigationBar.barTintColor = .darkGray
 
+        editBarButton.title = "Edit"
+        editBarButton.tintColor = UIColor.white
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
+        
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        saveData = saveData.sorted(byKeyPath: "id", ascending: true)
         self.table.reloadData()
     }
     
@@ -61,6 +67,39 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
+    //編集モード
+    @IBAction func edit() {
+        if table.isEditing {
+            table.setEditing(false, animated: true)
+            editBarButton.title = "Edit"
+            editBarButton.tintColor = UIColor.white
+        }else{
+            table.setEditing(true, animated: true)
+            editBarButton.title = "Done"
+            editBarButton.tintColor = UIColor.orange
+        }
+    }
+    
+    //編集モードの時にdeleteを選択した時に呼ばれる　commitに削除を示すeditingStyle.deleteが渡される forRowAtは選択された行番号
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        try! realm.write {
+            realm.delete(saveData[indexPath.row])
+        }
+        table.reloadData()
+    }
+    
+    //編集モードで、入れ替えが行われた時に発動 moveRowAtが動く前 toが動いた後の行番号
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        print("入れ替えが呼ばれました")
+        print(sourceIndexPath.row, destinationIndexPath.row)
+//        //realmに書き込み
+//        try! realm.write {
+//            var tempId: Int = 0
+//            tempId = saveData[sourceIndexPath.row].id
+//            saveData[sourceIndexPath.row].id = saveData[destinationIndexPath.row].id
+//            saveData[destinationIndexPath.row].id = tempId
+//        }
+    }
     //cell選択時に呼ばれるメゾット
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //performSegue(withIdentifier: "toEdit", sender: nil)
