@@ -9,12 +9,13 @@ import UIKit
 import RealmSwift
 import PKHUD
 
-class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelegate{
+class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var taskNameTextField: UITextField!
     @IBOutlet weak var deadLineTextField: UITextField!
     @IBOutlet weak var tagTextField: UITextField!
     @IBOutlet weak var deatailTextView: UITextView!
+    var  pickerView = UIPickerView()
     
     //cellの番号
     var id: Int = 0
@@ -26,9 +27,20 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     let dateformatter = DateFormatter()
     var datePicker: UIDatePicker = UIDatePicker()
     
+    //タグ管理
+    var userDefaults: UserDefaults = UserDefaults.standard
+    var tagSaveData: [String] = ["（タグを指定しない）"]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //タグ
+        if userDefaults.object(forKey: "tags") != nil {
+            tagSaveData = userDefaults.object(forKey: "tags") as! [String]
+        }else{
+            tagSaveData = ["（タグを指定しない）"]
+        }
+        
         saveData = realm.object(ofType: SaveDataFormat.self, forPrimaryKey: id)!
         taskNameTextField.text = saveData.taskName
         deadLineTextField.text = saveData.deadLine
@@ -38,8 +50,16 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         //キーボード設定のための準備
         taskNameTextField.delegate = self
         deatailTextView.delegate = self
+        tagTextField.delegate = self
+        pickerView.delegate = self
+        print(tagSaveData)
 
+        //見た目系
         navigationController?.navigationBar.tintColor = .white
+        navigationController?.setToolbarHidden(true, animated: false)
+        deatailTextView.layer.borderColor = CGColor.init(red: 220/255, green: 220/255, blue: 220/255, alpha: 1)
+        deatailTextView.layer.borderWidth = 1
+        deatailTextView.layer.cornerRadius = 8
 
         //日付系
         dateformatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ydMMMHHmm", options: 0, locale: Locale(identifier: "ja_JP"))
@@ -63,12 +83,17 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         //紐づいているUITextfieldへ代入
         deadLineTextField.inputView = datePicker
         deadLineTextField.inputAccessoryView = toolbar
+        
+        //pickerviewとtagtextfieldを連携
+        tagTextField.inputView = pickerView
+        tagTextField.inputAccessoryView = toolbar
 
     }
     
     @objc func done() {
-            deadLineTextField.endEditing(true)
-            deadLineTextField.text = "\(dateformatter.string(from: datePicker.date))"
+        deadLineTextField.endEditing(true)
+        deadLineTextField.text = "\(dateformatter.string(from: datePicker.date))"
+        tagTextField.resignFirstResponder()
     }
     
     //キーボード関連
@@ -85,6 +110,23 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         }
     }
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return tagSaveData.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return tagSaveData[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        tagTextField.text = tagSaveData[row]
+    }
+    
+    
     @IBAction func save() {
         
         if taskNameTextField.text == "" {
@@ -96,7 +138,11 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
             newSaveData.id = id
             newSaveData.taskName = taskNameTextField.text ?? "no name"
             newSaveData.deadLine = deadLineTextField.text ?? ""
-            newSaveData.tag = tagTextField.text ?? ""
+            if tagTextField.text == "（タグを指定しない）" {
+                newSaveData.tag = ""
+            }else{
+                newSaveData.tag = tagTextField.text ?? ""
+            }
             newSaveData.deatail = deatailTextView.text ?? ""
             try! realm.write{
                 realm.add(newSaveData, update: .all)

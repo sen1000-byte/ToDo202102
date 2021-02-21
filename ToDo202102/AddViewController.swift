@@ -9,12 +9,14 @@ import UIKit
 import RealmSwift
 import PKHUD
 
-class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
     @IBOutlet var taskNameTextField: UITextField!
     @IBOutlet var datePicker: UIDatePicker! = UIDatePicker()
     @IBOutlet var tagTextField: UITextField!
     @IBOutlet var deatailTextView: UITextView!
+    
+    var pickerView = UIPickerView()
     
     var id: Int = 0
     var taskName: String = ""
@@ -24,13 +26,20 @@ class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelega
     var deatail: String = ""
     
     //タグ管理
-    var tagArray = [String?]()
+    var userDefaults: UserDefaults = UserDefaults.standard
+    var tagSaveData: [String] = ["（タグを指定しない）"]
     
     //保存準備
     let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //タグ
+        if userDefaults.object(forKey: "tags") != nil {
+            tagSaveData = userDefaults.object(forKey: "tags") as! [String]
+        }else{
+            tagSaveData = ["（タグを指定しない）"]
+        }
         //datePickerの設定
         //からからにする。
         datePicker.preferredDatePickerStyle = .wheels
@@ -43,7 +52,41 @@ class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelega
         //キーボード閉じるために設定準備
         taskNameTextField.delegate = self
         deatailTextView.delegate = self
+        
+        pickerView.delegate = self
+        //キーボードにdoneボタンをつける
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 43))
+        let spaceItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+        toolbar.setItems([spaceItem,doneItem], animated: true)
+        //pickerviewとtagtextfieldを連携
+        tagTextField.inputView = pickerView
+        tagTextField.inputAccessoryView = toolbar
+        //見た目系
+        deatailTextView.layer.borderColor = CGColor.init(red: 220/255, green: 220/255, blue: 220/255, alpha: 1)
+        deatailTextView.layer.borderWidth = 1
+        deatailTextView.layer.cornerRadius = 8
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func done() {
+        tagTextField.resignFirstResponder()
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return tagSaveData.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return tagSaveData[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        tagTextField.text = tagSaveData[row]
     }
     
     //enterが押された時に発動
@@ -83,7 +126,11 @@ class AddViewController: UIViewController, UITextFieldDelegate, UITextViewDelega
 //        deadLineInt = Int(formatter.string(from: datePicker.date))
         
         //タグ
-        tag = ""
+        if tagTextField.text == "（タグを指定しない）" {
+            tag = ""
+        }else{
+            tag = tagTextField.text ?? ""
+        }
         
         //詳細
         deatail = deatailTextView.text ?? ""

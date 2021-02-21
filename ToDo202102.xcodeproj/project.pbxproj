@@ -18,6 +18,7 @@
 		335EB28525DE54C1004818C9 /* SaveDataFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335EB28425DE54C1004818C9 /* SaveDataFormat.swift */; };
 		335EB29325DFBAA9004818C9 /* UIColor-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335EB29225DFBAA8004818C9 /* UIColor-Extension.swift */; };
 		335EB29A25E090B8004818C9 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335EB29925E090B8004818C9 /* EditViewController.swift */; };
+		33A5928C25E2A1EF003A897B /* TagManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A5928B25E2A1EE003A897B /* TagManageViewController.swift */; };
 		BD146A12968DB721A6DE084D /* Pods_ToDo202102.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF683E3C30A070CBD481BDCA /* Pods_ToDo202102.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		335EB28425DE54C1004818C9 /* SaveDataFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDataFormat.swift; sourceTree = "<group>"; };
 		335EB29225DFBAA8004818C9 /* UIColor-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor-Extension.swift"; sourceTree = "<group>"; };
 		335EB29925E090B8004818C9 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
+		33A5928B25E2A1EE003A897B /* TagManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagManageViewController.swift; sourceTree = "<group>"; };
 		389DBFCE137AD03C43FD7089 /* Pods-ToDo202102.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo202102.debug.xcconfig"; path = "Target Support Files/Pods-ToDo202102/Pods-ToDo202102.debug.xcconfig"; sourceTree = "<group>"; };
 		7D2B79D82EFC57AE9191F2CA /* Pods-ToDo202102.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo202102.release.xcconfig"; path = "Target Support Files/Pods-ToDo202102/Pods-ToDo202102.release.xcconfig"; sourceTree = "<group>"; };
 		FF683E3C30A070CBD481BDCA /* Pods_ToDo202102.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ToDo202102.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +87,7 @@
 				335EB29925E090B8004818C9 /* EditViewController.swift */,
 				335EB28425DE54C1004818C9 /* SaveDataFormat.swift */,
 				335EB29225DFBAA8004818C9 /* UIColor-Extension.swift */,
+				33A5928B25E2A1EE003A897B /* TagManageViewController.swift */,
 			);
 			path = ToDo202102;
 			sourceTree = "<group>";
@@ -227,6 +230,7 @@
 				335EB28525DE54C1004818C9 /* SaveDataFormat.swift in Sources */,
 				3314EB4725DA56660040192D /* SceneDelegate.swift in Sources */,
 				335EB29325DFBAA9004818C9 /* UIColor-Extension.swift in Sources */,
+				33A5928C25E2A1EF003A897B /* TagManageViewController.swift in Sources */,
 				335EB27E25DE4217004818C9 /* MainTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
