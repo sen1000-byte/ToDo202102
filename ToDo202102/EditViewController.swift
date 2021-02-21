@@ -17,7 +17,7 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     @IBOutlet weak var deatailTextView: UITextView!
     
     //cellの番号
-    var indexNumber: Int = 0
+    var id: Int = 0
     //realmのインスタンス作成
     let realm = try! Realm()
     var saveData = SaveDataFormat()
@@ -29,7 +29,7 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        saveData = realm.objects(SaveDataFormat.self)[indexNumber]
+        saveData = realm.object(ofType: SaveDataFormat.self, forPrimaryKey: id)!
         taskNameTextField.text = saveData.taskName
         deadLineTextField.text = saveData.deadLine
         tagTextField.text = saveData.tag
@@ -90,13 +90,15 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
             HUD.flash(. labeledError(title: "保存できません", subtitle: "タスク名を記入してください"), delay: 1.5)
         }else{
             //realmに上書き保存
+            //idを使って上書き
+            let newSaveData = SaveDataFormat()
+            newSaveData.id = id
+            newSaveData.taskName = taskNameTextField.text ?? "no name"
+            newSaveData.deadLine = deadLineTextField.text ?? ""
+            newSaveData.tag = tagTextField.text ?? ""
+            newSaveData.deatail = deatailTextView.text ?? ""
             try! realm.write{
-                let results = realm.objects(SaveDataFormat.self)
-                results[indexNumber].taskName = taskNameTextField.text ?? "no name"
-                results[indexNumber].deadLine = deadLineTextField.text ?? ""
-                //            results[indexNumber].deadLineInt = 0
-                results[indexNumber].tag = tagTextField.text ?? ""
-                results[indexNumber].deatail = deatailTextView.text ?? ""
+                realm.add(newSaveData, update: .all)
             }
             //navigationControllerの戻り方
             self.navigationController?.popViewController(animated: true)

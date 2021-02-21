@@ -20,7 +20,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //保存されたかどうか
     var whetherSaved: Bool = false
     //選択したセルの番号
-    var indexNumber: Int = 0
+    var id: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
         editBarButton.title = "Edit"
         editBarButton.tintColor = UIColor.white
-        print(Realm.Configuration.defaultConfiguration.fileURL!)
+        //print(Realm.Configuration.defaultConfiguration.fileURL!)
+        
         
         // Do any additional setup after loading the view.
     }
@@ -73,6 +74,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             table.setEditing(false, animated: true)
             editBarButton.title = "Edit"
             editBarButton.tintColor = UIColor.white
+            table.reloadData()
         }else{
             table.setEditing(true, animated: true)
             editBarButton.title = "Done"
@@ -92,20 +94,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         print("入れ替えが呼ばれました")
         print(sourceIndexPath.row, destinationIndexPath.row)
-//        //realmに書き込み
-//        try! realm.write {
-//            var tempId: Int = 0
-//            tempId = saveData[sourceIndexPath.row].id
-//            saveData[sourceIndexPath.row].id = saveData[destinationIndexPath.row].id
-//            saveData[destinationIndexPath.row].id = tempId
-//        }
+        //やばい、絶対もっといい方法ある
+        let tempMoveData = SaveDataFormat()
+        let tempDestinationData = SaveDataFormat()
+        
+        tempMoveData.id = saveData[sourceIndexPath.row].id
+        tempMoveData.taskName = saveData[destinationIndexPath.row].taskName
+        tempMoveData.deadLine = saveData[destinationIndexPath.row].deadLine
+        tempMoveData.tag = saveData[destinationIndexPath.row].tag
+        tempMoveData.deatail = saveData[destinationIndexPath.row].deatail
+        
+        tempDestinationData.id = saveData[destinationIndexPath.row].id
+        tempDestinationData.taskName = saveData[sourceIndexPath.row].taskName
+        tempDestinationData.deadLine = saveData[sourceIndexPath.row].deadLine
+        tempDestinationData.tag = saveData[sourceIndexPath.row].tag
+        tempDestinationData.deatail = saveData[sourceIndexPath.row].deatail
+        print(tempMoveData, tempDestinationData)
+        //realmに書き込み プライマリキー（id）を使って上書き
+        try! realm.write {
+            realm.add(tempMoveData, update: .all)
+            realm.add(tempDestinationData, update: .all)
+        }
     }
     //cell選択時に呼ばれるメゾット
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //performSegue(withIdentifier: "toEdit", sender: nil)
-        indexNumber = indexPath.row
+        id = saveData[indexPath.row].id
         let nextVC = self.storyboard?.instantiateViewController(identifier: "EditViewController") as! EditViewController
-        nextVC.indexNumber = indexNumber
+        nextVC.id = id
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     

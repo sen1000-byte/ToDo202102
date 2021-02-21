@@ -16,4 +16,9 @@ class SaveDataFormat: Object {
     @objc dynamic var tag: String = ""
     @objc dynamic var deatail: String = ""
     
+    //プライマリキーを設定する
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
 }
