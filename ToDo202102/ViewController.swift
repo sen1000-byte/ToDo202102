@@ -9,11 +9,12 @@ import UIKit
 import RealmSwift
 import PKHUD
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate{
 
     //StroyBoadで扱うTableViewを宣言
     @IBOutlet var table: UITableView!
     @IBOutlet weak var editBarButton: UIBarButtonItem!
+    @IBOutlet var searchField: UISearchBar!
     //realmから値を全て取り出し
     let realm = try! Realm()
     var saveData = try! Realm().objects(SaveDataFormat.self)
@@ -34,6 +35,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         editBarButton.tintColor = UIColor.white
         //print(Realm.Configuration.defaultConfiguration.fileURL!)
         
+        searchField.delegate = self
+        searchField.tintColor = UIColor.orange
         
         // Do any additional setup after loading the view.
     }
@@ -50,6 +53,35 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             HUD.dimsBackground = false
             HUD.flash(.labeledSuccess(title: "保存しました", subtitle: nil), delay: 1.0)
             whetherSaved = false
+        }
+    }
+    
+    //検索バーに記入があった時
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    //検索でキャンセルが押された時
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        //キーボードを閉じる(最初の状態に戻す)
+        searchBar.resignFirstResponder()
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.text = ""
+        saveData = realm.objects(SaveDataFormat.self)
+        table.reloadData()
+    }
+    //検索を押された時
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //キーボードを閉じる
+        view.endEditing(true)
+        //nilでなければ処理を行う
+        if searchBar.text != "" && searchBar.text != nil {
+            let word = searchBar.text ?? ""
+            saveData = realm.objects(SaveDataFormat.self).filter("taskName CONTAINS '\(word)' OR deatail CONTAINS '\(word)'")
+            table.reloadData()
+        }else{
+            searchBar.setShowsCancelButton(false, animated: true)
+            saveData = realm.objects(SaveDataFormat.self)
+            table.reloadData()
         }
     }
     
@@ -73,11 +105,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if table.isEditing {
             table.setEditing(false, animated: true)
             editBarButton.title = "Edit"
+            editBarButton.style = .plain
             editBarButton.tintColor = UIColor.white
             table.reloadData()
         }else{
             table.setEditing(true, animated: true)
             editBarButton.title = "Done"
+            editBarButton.style = .done
             editBarButton.tintColor = UIColor.orange
         }
     }
@@ -132,10 +166,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //        }
 //    }
     
-//    //cellの高さ
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 80
-//    }
+    //cellの高さ
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 45
+    }
     
     
     @IBAction func Add() {

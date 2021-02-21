@@ -148,8 +148,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kJk-V8-zhE">
-                                                    <rect key="frame" x="30" y="11" width="44.5" height="21.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kJk-V8-zhE">
+                                                    <rect key="frame" x="30" y="0.5" width="104.5" height="43"/>
+                                                    <string key="text">name
+namecontinu</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -197,11 +199,12 @@
                     </view>
                     <navigationItem key="navigationItem" title="ToDo" id="IVt-kb-UkD">
                         <barButtonItem key="leftBarButtonItem" systemItem="add" id="zVO-dq-uXJ">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="Add" destination="BYZ-38-t0r" id="aRa-JM-tEy"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="3DW-IH-mE5">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" style="plain" id="3DW-IH-mE5">
                             <color key="tintColor" name="AccentColor"/>
                             <connections>
                                 <action selector="edit" destination="BYZ-38-t0r" id="XAa-c3-Alg"/>
@@ -211,6 +214,7 @@
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="editBarButton" destination="3DW-IH-mE5" id="fYg-g1-kzl"/>
+                        <outlet property="searchField" destination="JtO-Bo-EI8" id="bsR-QX-0da"/>
                         <outlet property="table" destination="YL2-PI-0qq" id="Qxj-Eo-Dxv"/>
                         <segue destination="fHm-8i-CpZ" kind="presentation" identifier="toAdd" modalPresentationStyle="fullScreen" id="YJ5-xu-bA1"/>
                     </connections>

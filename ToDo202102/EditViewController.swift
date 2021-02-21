@@ -38,7 +38,8 @@ class EditViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         //キーボード設定のための準備
         taskNameTextField.delegate = self
         deatailTextView.delegate = self
-        
+
+        navigationController?.navigationBar.tintColor = .white
 
         //日付系
         dateformatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ydMMMHHmm", options: 0, locale: Locale(identifier: "ja_JP"))
